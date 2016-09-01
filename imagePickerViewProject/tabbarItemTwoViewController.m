@@ -9,6 +9,7 @@
 #import "tabbarItemTwoViewController.h"
 #import "BackgroundTransferServiceViewController.h"
 #import "jsViewController.h"
+#import "imageCirleViewController.h"
 #import "imageViewViewController.h"
 
 @interface tabbarItemTwoViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -60,7 +61,9 @@
     }else if(indexPath.row == 2){
         jsViewController * vc = [[jsViewController alloc]init];
         [self.navigationController pushViewController:vc animated:YES];
-        
+    }else if(indexPath.row == 3){
+        imageCirleViewController * vc  = [[imageCirleViewController alloc]init];
+        [self.navigationController pushViewController:vc animated:YES];
     }else if(indexPath.row == 4){
         imageViewViewController * vc = [[imageViewViewController alloc]init];
         [self.navigationController pushViewController:vc animated:YES];

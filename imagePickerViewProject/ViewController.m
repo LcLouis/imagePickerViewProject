@@ -12,8 +12,7 @@
 #import "ViewController.h"
 #import "PECropViewController.h"
 //#import "YYTimer.h"
- 
-@interface ViewController ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+@interface ViewController ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate,PECropViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *cameraBtn;
 @property (weak, nonatomic) IBOutlet UIButton *albumBtn;
@@ -59,11 +58,7 @@
 
 
 - (IBAction)clickAlbumBtn:(id)sender {
-    
-    
-    
-    
-    
+    NSLog(@"!@#!@#");
 }
 
 
@@ -92,8 +87,7 @@
 }
 
 #pragma mark Camera View Delegate Methods
-- (void)imagePickerController:(UIImagePickerController *)picker
-didFinishPickingMediaWithInfo:(NSDictionary *)info {
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
 //    UIImage *image=nil;
 //    image = [info objectForKey:UIImagePickerControllerEditedImage];
 //        
@@ -102,8 +96,11 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 //    self.imageView.image = image;
 //    [picker dismissViewControllerAnimated:YES completion:nil];
 
+    
     self.navigationController.navigationBarHidden = NO;
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+    
+    [self preferredStatusBarStyle];
+//    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     
     [picker dismissViewControllerAnimated:YES completion:^{
@@ -115,7 +112,6 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
 - (void)openEditor:(UIImage *)image
 {
     PECropViewController *controller = [[PECropViewController alloc] init];
-//    controller.isShowSquareView = YES;
     controller.delegate = self;
     controller.image = image;
     
@@ -124,6 +120,21 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
     [self presentViewController:navigationController animated:YES completion:NULL];
 }
+
+- (void)cropViewController:(PECropViewController *)controller didFinishCroppingImage:(UIImage *)croppedImage
+{
+    [controller dismissViewControllerAnimated:YES completion:^{
+        self.imageView.image = croppedImage;
+    }];
+    
+}
+- (void)cropViewControllerDidCancel:(PECropViewController *)controller
+{
+    [controller dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+}
+
 
 
 //图片大小

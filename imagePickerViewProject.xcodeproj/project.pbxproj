@@ -10,6 +10,7 @@
 		4B00DE8D1CBF9EDA00131D72 /* imageMainColorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B00DE8C1CBF9EDA00131D72 /* imageMainColorViewController.m */; };
 		4B00DE8F1CBF9F3C00131D72 /* imageOne.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4B00DE8E1CBF9F3C00131D72 /* imageOne.jpg */; };
 		4B2462411D65AC2D00F36F5E /* imageCirleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B2462401D65AC2D00F36F5E /* imageCirleViewController.m */; };
+		4B32EF3E1D78370700A6CEB9 /* customCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B32EF3D1D78370700A6CEB9 /* customCollectionViewCell.m */; };
 		4B34883C1C9D3B05006B9814 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B34883B1C9D3B05006B9814 /* main.m */; };
 		4B34883F1C9D3B05006B9814 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B34883E1C9D3B05006B9814 /* AppDelegate.m */; };
 		4B3488421C9D3B05006B9814 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B3488411C9D3B05006B9814 /* ViewController.m */; };
@@ -64,6 +65,8 @@
 		4B00DE8E1CBF9F3C00131D72 /* imageOne.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = imageOne.jpg; sourceTree = "<group>"; };
 		4B24623F1D65AC2D00F36F5E /* imageCirleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = imageCirleViewController.h; sourceTree = "<group>"; };
 		4B2462401D65AC2D00F36F5E /* imageCirleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = imageCirleViewController.m; sourceTree = "<group>"; };
+		4B32EF3C1D78370700A6CEB9 /* customCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = customCollectionViewCell.h; sourceTree = "<group>"; };
+		4B32EF3D1D78370700A6CEB9 /* customCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = customCollectionViewCell.m; sourceTree = "<group>"; };
 		4B3488371C9D3B05006B9814 /* imagePickerViewProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = imagePickerViewProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B34883B1C9D3B05006B9814 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4B34883D1C9D3B05006B9814 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -149,6 +152,8 @@
 			children = (
 				4B24623F1D65AC2D00F36F5E /* imageCirleViewController.h */,
 				4B2462401D65AC2D00F36F5E /* imageCirleViewController.m */,
+				4B32EF3C1D78370700A6CEB9 /* customCollectionViewCell.h */,
+				4B32EF3D1D78370700A6CEB9 /* customCollectionViewCell.m */,
 				4B3858CE1D6C401C00E6E702 /* imageViewViewController.h */,
 				4B3858CF1D6C401C00E6E702 /* imageViewViewController.m */,
 				4B3858D41D6C43E400E6E702 /* 5.pic.jpg */,
@@ -543,6 +548,7 @@
 				4B34883C1C9D3B05006B9814 /* main.m in Sources */,
 				4B61A0F31CAD570900D88517 /* labelViewController.m in Sources */,
 				4BCBA7DC1CC8B0940099D06F /* textBookViewController.m in Sources */,
+				4B32EF3E1D78370700A6CEB9 /* customCollectionViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
