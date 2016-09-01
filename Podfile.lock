@@ -1,0 +1,85 @@
+PODS:
+  - AFNetworking (3.1.0):
+    - AFNetworking/NSURLSession (= 3.1.0)
+    - AFNetworking/Reachability (= 3.1.0)
+    - AFNetworking/Security (= 3.1.0)
+    - AFNetworking/Serialization (= 3.1.0)
+    - AFNetworking/UIKit (= 3.1.0)
+  - AFNetworking/NSURLSession (3.1.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.1.0)
+  - AFNetworking/Security (3.1.0)
+  - AFNetworking/Serialization (3.1.0)
+  - AFNetworking/UIKit (3.1.0):
+    - AFNetworking/NSURLSession
+  - ARSegmentPager (1.1.2)
+  - BabyBluetooth (0.7.0)
+  - FBAllocationTracker (0.1.3)
+  - FBMemoryProfiler (0.1.2):
+    - FBAllocationTracker (~> 0.1)
+    - FBRetainCycleDetector (~> 0.1)
+  - FBRetainCycleDetector (0.1.2)
+  - FMDB (2.6.2):
+    - FMDB/standard (= 2.6.2)
+  - FMDB/standard (2.6.2)
+  - Masonry (1.0.0)
+  - MBProgressHUD (0.9.2)
+  - MJRefresh (3.1.0)
+  - OpenShare (0.0.1)
+  - OpenUDID (1.0.0)
+  - PEPhotoCropEditor (1.3.1)
+  - pop (1.0.9)
+  - UITableView+FDTemplateLayoutCell (1.4)
+  - YYCache (1.0.3)
+  - YYImage (1.0.1):
+    - YYImage/Core (= 1.0.1)
+  - YYImage/Core (1.0.1)
+  - YYModel (1.0.3)
+  - YYWebImage (1.0.3):
+    - YYCache
+    - YYImage
+  - ZipArchive (1.4.0)
+
+DEPENDENCIES:
+  - AFNetworking (~> 3.1.0)
+  - ARSegmentPager
+  - BabyBluetooth (~> 0.7.0)
+  - FBMemoryProfiler
+  - FMDB
+  - Masonry
+  - MBProgressHUD (~> 0.8)
+  - MJRefresh
+  - OpenShare
+  - OpenUDID
+  - PEPhotoCropEditor
+  - pop
+  - UITableView+FDTemplateLayoutCell
+  - YYModel
+  - YYWebImage
+  - ZipArchive
+
+SPEC CHECKSUMS:
+  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  ARSegmentPager: daff3a6a14c71280a7494e404e658df45a38e3ae
+  BabyBluetooth: d50758aecf24d4a0ab9271d69f0f116d6bee51c9
+  FBAllocationTracker: bf649e786f2a7a7c7cffb99d59d3f81a0e9e294b
+  FBMemoryProfiler: bc0d488b31bb18ce5659c80f58c989c837bb7378
+  FBRetainCycleDetector: 45462f9ed1af0cd77224a4cc4e6dacaca47371b4
+  FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
+  Masonry: b529bb169217897b6354d4b56b1fada6d475b13d
+  MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
+  MJRefresh: 743e6404967d1c2c688472ea3ecfde247d872db4
+  OpenShare: a560580dbb729d5c0c3cc1ee84cd6aa4a07e94c6
+  OpenUDID: e7cb6984c7304906ad20f3a36bf087b025896b6b
+  PEPhotoCropEditor: 613292fce009efd085e7aed975f1ebb3fec8bb7b
+  pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce
+  UITableView+FDTemplateLayoutCell: 234e1582bcc4e18461af91155123bb96538ed030
+  YYCache: 282f35b5b0990833d0b7a06d864a87141a021da2
+  YYImage: b41b45bc5f32bfcdf67bdfb9c09da9e9832357c0
+  YYModel: 63142c2f07c5c8c9d1c261689cf3827ea6ab2886
+  YYWebImage: 8da75a611fd0d2e0f58a273f9ca0bc731614cb0d
+  ZipArchive: e25a4373192673e3229ac8d6e9f64a3e5713c966
+
+COCOAPODS: 0.39.0

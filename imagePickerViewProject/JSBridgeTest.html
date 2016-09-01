@@ -1,0 +1,234 @@
+<!doctype html>
+<html>
+    <head>
+    	<meta content="text/html; charset=utf-8" http-equiv="content-type">
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+            <style type='text/css'>
+                html { font-family:Helvetica; color:#222; }
+                h1 { color:steelblue; font-size:24px; margin-top:24px; }
+                button { margin:0 3px 10px; font-size:12px; }
+                .logLine { border-bottom:1px solid #ccc; padding:4px 2px; font-family:courier; font-size:11px; }
+                </style>
+            <script type="text/javascript">
+                //notation: js file can only use this kind of comments
+                //since comments will cause error when use in webview.loadurl,
+                //comments will be remove by java use regexp
+                (function() {
+                 if (window.WebViewJavascriptBridge) {
+                 return;
+                 }
+                 
+                 var messagingIframe;
+                 var sendMessageQueue = [];
+                 var receiveMessageQueue = [];
+                 var messageHandlers = {};
+                 
+                 var CUSTOM_PROTOCOL_SCHEME = 'yy';
+                 var QUEUE_HAS_MESSAGE = '__QUEUE_MESSAGE__/';
+                 
+                 var responseCallbacks = {};
+                 var uniqueId = 1;
+                 
+                 function _createQueueReadyIframe(doc) {
+                 messagingIframe = doc.createElement('iframe');
+                 messagingIframe.style.display = 'none';
+                 doc.documentElement.appendChild(messagingIframe);
+                 }
+                 
+                 function isAndroid() {
+                 var ua = navigator.userAgent.toLowerCase();
+                 var isA = ua.indexOf("android") > -1;
+                 if (isA) {
+                 return true;
+                 }
+                 return false;
+                 }
+                 
+                 function isIphone() {
+                 var ua = navigator.userAgent.toLowerCase();
+                 var isIph = ua.indexOf("iphone") > -1;
+                 if (isIph) {
+                 return true;
+                 }
+                 return false;
+                 }
+                 
+                 //set default messageHandler
+                 function init(messageHandler) {
+                 if (WebViewJavascriptBridge._messageHandler) {
+                 throw new Error('WebViewJavascriptBridge.init called twice');
+                 }
+                 WebViewJavascriptBridge._messageHandler = messageHandler;
+                 var receivedMessages = receiveMessageQueue;
+                 receiveMessageQueue = null;
+                 for (var i = 0; i < receivedMessages.length; i++) {
+                 _dispatchMessageFromNative(receivedMessages[i]);
+                 }
+                 }
+                 
+                 function send(data, responseCallback) {
+                 _doSend({
+                         data: data
+                         }, responseCallback);
+                 }
+                 
+                 function registerHandler(handlerName, handler) {
+                 messageHandlers[handlerName] = handler;
+                 }
+                 
+                 function callHandler(handlerName, data, responseCallback) {
+                 _doSend({
+                         handlerName: handlerName,
+                         data: data
+                         }, responseCallback);
+                 }
+                 
+                 //sendMessage add message, 触发native处理 sendMessage
+                 function _doSend(message, responseCallback) {
+                 if (responseCallback) {
+                 var callbackId = 'cb_' + (uniqueId++) + '_' + new Date().getTime();
+                 responseCallbacks[callbackId] = responseCallback;
+                 message.callbackId = callbackId;
+                 }
+                 
+                 sendMessageQueue.push(message);
+                 messagingIframe.src = CUSTOM_PROTOCOL_SCHEME + '://' + QUEUE_HAS_MESSAGE;
+                 }
+                 
+                 // 提供给native调用,该函数作用:获取sendMessageQueue返回给native,由于android不能直接获取返回的内容,所以使用url shouldOverrideUrlLoading 的方式返回内容
+                 function _fetchQueue() {
+                 var messageQueueString = JSON.stringify(sendMessageQueue);
+                 sendMessageQueue = [];
+                 //add by hq
+                 if (isIphone()) {
+                 return messageQueueString;
+                 //android can't read directly the return data, so we can reload iframe src to communicate with java
+                 } else if (isAndroid()) {
+                 messagingIframe.src = CUSTOM_PROTOCOL_SCHEME + '://return/_fetchQueue/' + encodeURIComponent(messageQueueString);
+                 }
+                 }
+                 
+                 //提供给native使用,
+                 function _dispatchMessageFromNative(messageJSON) {
+                 setTimeout(function() {
+                            var message = JSON.parse(messageJSON);
+                            var responseCallback;
+                            //java call finished, now need to call js callback function
+                            if (message.responseId) {
+                            responseCallback = responseCallbacks[message.responseId];
+                            if (!responseCallback) {
+                            return;
+                            }
+                            responseCallback(message.responseData);
+                            delete responseCallbacks[message.responseId];
+                            } else {
+                            //直接发送
+                            if (message.callbackId) {
+                            var callbackResponseId = message.callbackId;
+                            responseCallback = function(responseData) {
+                            _doSend({
+                                    responseId: callbackResponseId,
+                                    responseData: responseData
+                                    });
+                            };
+                            }
+                            
+                            var handler = WebViewJavascriptBridge._messageHandler;
+                            if (message.handlerName) {
+                            handler = messageHandlers[message.handlerName];
+                            }
+                            //查找指定handler
+                            try {
+                            handler(message.data, responseCallback);
+                            } catch (exception) {
+                            if (typeof console != 'undefined') {
+                            console.log("WebViewJavascriptBridge: WARNING: javascript handler threw.", message, exception);
+                            }
+                            }
+                            }
+                            });
+                 }
+                 
+                 //提供给native调用,receiveMessageQueue 在会在页面加载完后赋值为null,所以
+                 function _handleMessageFromNative(messageJSON) {
+                 if (receiveMessageQueue) {
+                 receiveMessageQueue.push(messageJSON);
+                 } else {
+                 _dispatchMessageFromNative(messageJSON);
+                 }
+                 }
+                 
+                 var WebViewJavascriptBridge = window.WebViewJavascriptBridge = {
+                 init: init,
+                 send: send,
+                 registerHandler: registerHandler,
+                 callHandler: callHandler,
+                 _fetchQueue: _fetchQueue,
+                 _handleMessageFromNative: _handleMessageFromNative
+                 };
+                 
+                 var doc = document;
+                 _createQueueReadyIframe(doc);
+                 var readyEvent = doc.createEvent('Events');
+                 readyEvent.initEvent('WebViewJavascriptBridgeReady');
+                 readyEvent.bridge = WebViewJavascriptBridge;
+                 doc.dispatchEvent(readyEvent);
+                 window.WebViewJavascriptBridge.init(function(message, responseCallback) {});
+                 })();
+                 
+            function take_photo(callback)
+            {
+                window.WebViewJavascriptBridge.callHandler('take_photo', {}, callback);
+            }
+            function sign_url(callback,url)
+            {
+                window.WebViewJavascriptBridge.callHandler('sign_url', {"url":url}, callback);
+            }
+            function startNativeModule(callback, moduleKey)
+            {
+                window.WebViewJavascriptBridge.callHandler('startNativeModule', {"moduleKey":moduleKey}, callback);
+            }
+            </script>
+    </head>
+    <body><script>
+with(document)with(body)with(insertBefore(createElement("script"),firstChild))setAttribute("exparams","category=&userid=&aplus&yunid=&asid=AQAAAAC9u1JWZTfxdgAAAAD9qy3HFC6sbw==",id="tb-beacon-aplus",src=(location>"https"?"//s":"//a")+".tbcdn.cn/s/aplus_v2.js")
+</script>
+
+        <h1>WebViewJavascriptBridge Demo</h1>
+        <img id="img1" src="">
+        <div id='buttons'></div> <div id='log'></div>
+        <script>
+        window.onerror = function(err) {
+        alert(err);
+        }
+
+        var callbackButton = document.getElementById('buttons').appendChild(document.createElement('button'))
+        callbackButton.innerHTML = '拍 照'
+        callbackButton.onclick = function(e) {
+            e.preventDefault()
+            take_photo(function(base64image){
+                var img = document.getElementById("img1");
+                img.src = base64image;
+            });
+        }
+
+        callbackButton = document.getElementById('buttons').appendChild(document.createElement('button'))
+        callbackButton.innerHTML = 'URL加 签'
+        callbackButton.onclick = function(e) {
+            e.preventDefault()
+            sign_url(function(response){
+                alert(response);
+            },"http://www.baidu.com");
+        }
+
+        callbackButton = document.getElementById('buttons').appendChild(document.createElement('button'))
+        callbackButton.innerHTML = '打开 JZZDetalAct'
+        callbackButton.onclick = function(e) {
+            e.preventDefault()
+            startNativeModule(function(response){
+                alert(response);
+            },"JZZ_DTL");
+        }
+        </script>
+
+    </body></html>
